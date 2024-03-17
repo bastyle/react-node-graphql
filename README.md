@@ -30,7 +30,7 @@ must return {"msg":"OK"}
 
 
 ## Environment Variables:
-Create a .env file in the root directory and configure the necessary environment variables, including MongoDB connection details, OpenAI API key, and other required parameters.
+Create a .env file in the root directory and configure the necessary environment variables, including MongoDB connection details, and other required parameters.
 
 Example .env file:
 
