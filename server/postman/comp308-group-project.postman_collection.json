@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "fd9ac940-6bae-4fe7-880f-dcae6e11ed2b",
+		"name": "comp308-group-project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7215557"
+	},
+	"item": [
+		{
+			"name": "health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/health",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "health-secured",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							" url: pm.environment.get(\"tokenurl\") ,\r",
+							" method: 'POST',\r",
+							" header: {\r",
+							"    'Content-Type': 'application/json'\r",
+							" },\r",
+							"body: {\r",
+							"   mode: 'raw',\r",
+							"   raw: JSON.stringify({ \"username\": pm.environment.get(\"username\"), \"password\" : pm.environment.get(\"password\")})\r",
+							"}\r",
+							"}, function (err, res) {\r",
+							"    console.log(res.json().token)\r",
+							"    pm.environment.set(\"token\", res.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/health/secured",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"health",
+						"secured"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"exampleUser\",\r\n    \"password\": \"examplePassword\",\r\n    \"email\":\"exampleEmail@example.cl\",\r\n    \"firstName\": \"firstName\",\r\n    \"lastName\":\"lastName\",\r\n    \"role\": \"nurse\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"exampleUser\",\r\n    \"password\": \"examplePassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/65f646adcf5c8a12eee15dfc",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"65f646adcf5c8a12eee15dfc"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
