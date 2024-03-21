@@ -47,6 +47,7 @@ node_modules/
 jspm_packages/
 server/node_modules/
 client/node_modules/
+.idea/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
