@@ -20,9 +20,6 @@ npm start
 ## api deployed
 
 
-### health endpoint 
-
-
 must return {"msg":"OK"}
 
 ## website deployed
@@ -67,3 +64,16 @@ Access the health check endpoint at http://localhost:<your_port>/api/health to e
 
 ###
 ##
+
+## Postman Collection
+To import the Postman collection and environment file, follow these steps:
+
+1. Open Postman.
+2. Click on the "Import" button located at the top left corner of the application.
+3. In the opened dialog, select the "Upload Files" option.
+4. Navigate to the `./server/postman/` directory in your project.
+5. Select both `comp308-group-project.postman_collection.json` and `comp308-group-project-local.postman_environment.json` files and click on the "Open" button.
+
+After importing, you should see the collection in the "Collections" tab on the left side of the Postman interface. The environment file should be available in the "Environment" dropdown at the top right corner of the Postman interface.
+
+To use the imported environment, select it from the "Environment" dropdown. Now, when you send requests from the imported collection, the variables defined in the environment file will be used.

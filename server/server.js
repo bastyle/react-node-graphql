@@ -4,7 +4,8 @@ const app = express()
 const mongoose = require('mongoose')
 const cors = require("cors")
 const userRoutes = require("./routes/userRoutes");
-const auth = require('./middleware/auth')
+const auth = require('./middleware/authRoleValidator')
+const {NURSE} = require("./enums/roleEnum");
 
 const corsOptions = {
   origin: '*',
@@ -22,7 +23,7 @@ app.get('/api/health', (req, res) => {
   res.send('OK!');
 });
 
-app.get('/api/health/secured',auth, (req, res) => {
+app.get('/api/health/secured',auth(NURSE), (req, res) => {
   console.log('Sec Health check...');
   res.send('OK! Secured!');
 });
