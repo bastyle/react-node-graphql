@@ -59,7 +59,7 @@ async function startServer() {
   await server.start();
 
   // Apply middleware to Express app after server is started
-  server.applyMiddleware({ app });
+ server.applyMiddleware({ app, path: '/api/graphql' });
 
   app.listen(port, () => console.log(`Server listening on port ${port}`));
   console.log(`Server is running on port ${port}${server.graphqlPath}`);
