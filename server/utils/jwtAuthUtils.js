@@ -1,6 +1,11 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+/**
+ * This module exports a function that verifies a JWT token from the request headers.
+ * If the token is valid, it returns the decoded token.
+ * If the token is not present or is invalid, it throws an error.
+ */
 module.exports = (req) => {
     const authHeader = req.headers.authorization;
 
