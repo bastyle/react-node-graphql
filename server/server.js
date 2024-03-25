@@ -24,7 +24,7 @@ const server = new ApolloServer({
         } catch (err) {
             console.log('Invalid token');
         }
-        // Add the user to the context
+        // Add the user info to the context
         return {user};
     },
 });
