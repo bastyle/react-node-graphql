@@ -15,6 +15,7 @@ const typeDefs = gql`
   type Query {
     getDailyHealthInfo(id: ID!): DailyHealthInfo
     getDailyHealthInfos: [DailyHealthInfo]
+    getDailyHealthInfosByUser(userId: ID!): [DailyHealthInfo]
   }
 
   type Mutation {

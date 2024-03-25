@@ -8,6 +8,9 @@ const resolvers = {
     getDailyHealthInfos: async () => {
       return await DailyHealthInfo.find();
     },
+    getDailyHealthInfosByUser: async (_, { userId }) => {
+      return await DailyHealthInfo.find({ user: userId });
+    },
   },
   Mutation: {
     addDailyHealthInfo: async (_, { user, pulseRate, bloodPressure, weight, bodyTemperature, respiratoryRate }) => {
