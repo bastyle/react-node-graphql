@@ -1,4 +1,5 @@
 const DailyHealthInfo = require('../models/dailyHealthInfoModel');
+const PatientData = require('../models/patientDataModel');
 
 const resolvers = {
   Query: {
@@ -10,6 +11,12 @@ const resolvers = {
     },
     getDailyHealthInfosByUser: async (_, { userId }) => {
       return await DailyHealthInfo.find({ user: userId });
+    },
+    getPatientData: async (_, { userId }) => {
+      return await PatientData.findOne({ user: userId });
+    },
+    getPatientDataByUser: async (_, { userId }) => {
+      return await PatientData.find({ user: userId });
     },
   },
   Mutation: {
@@ -29,6 +36,16 @@ const resolvers = {
     },
     deleteDailyHealthInfo: async (_, { id }) => {
       return await DailyHealthInfo.findByIdAndDelete(id);
+    },
+    addPatientData: async (_, { user, vitalSigns, symptoms }, context) => {
+      if (!context.user) throw new Error(JSON.stringify({message: 'You are not authenticated!', code: 401}));
+      else if (context.user.profile !== 'nurse') throw new Error(JSON.stringify({
+        message: 'You are not authorized to add this data!',
+        code: 403
+      }));
+      const patientData = new PatientData({ user, vitalSigns, symptoms });
+      await patientData.save();
+      return patientData;
     },
   },
 };
