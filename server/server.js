@@ -7,42 +7,75 @@ const userRoutes = require("./routes/userRoutes");
 const auth = require('./middleware/authRoleValidator')
 const {NURSE} = require("./enums/roleEnum");
 
+// graphql
+const {ApolloServer} = require('apollo-server-express');
+const typeDefs = require('./graphql/typeDefs');
+const resolvers = require('./graphql/resolvers');
+const {verify} = require("jsonwebtoken");
+const jwtAuthUtils = require('./utils/jwtAuthUtils');
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({req}) => {
+        let user = null;
+        try {
+            user = jwtAuthUtils(req);
+            console.log('user:', user)
+        } catch (err) {
+            console.log('Invalid token');
+        }
+        // Add the user info to the context
+        return {user};
+    },
+});
+
 const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  optionsSuccessStatus: 204,
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
 app.use(express.json())
 const port = process.env.PORT || 5000;
-
+// Health check
 app.get('/api/health', (req, res) => {
-  console.log('Health check...');
-  res.send('OK!');
+    console.log('Health check...');
+    res.send('OK!');
 });
-
-app.get('/api/health/secured',auth(NURSE), (req, res) => {
-  console.log('Sec Health check...');
-  res.send('OK! Secured!');
+// Secured Health check
+app.get('/api/health/secured', auth(NURSE), (req, res) => {
+    console.log('Sec Health check...');
+    res.send('OK! Secured!');
 });
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 })
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('Failed to connect to MongoDB:', error);
-  });
+    .then(() => {
+        console.log('Connected to MongoDB');
+    })
+    .catch((error) => {
+        console.error('Failed to connect to MongoDB:', error);
+    });
 
 
+// Routes
 app.use("/api/users", userRoutes);
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+
+async function startServer() {
+    // Start the Apollo Server
+    await server.start();
+
+    // Apply middleware to Express app after server is started
+    server.applyMiddleware({app, path: '/api/graphql'});
+
+    app.listen(port, () => console.log(`Server listening on port ${port}`));
+    console.log(`Server is running on port ${port}${server.graphqlPath}`);
+}
+
+startServer().then(r => console.log('Server started...'));

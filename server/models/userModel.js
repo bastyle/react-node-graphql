@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -10,9 +11,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userId: {
+        type: String,
+        default: uuidv4,
+        unique: true
+    },
     lastName: {
         type: String,
-        required: true
+        default: uuidv4,
+        unique: true
     },
     email: {
         type: String,
