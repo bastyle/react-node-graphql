@@ -81,7 +81,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"patientUser\",\r\n    \"password\": \"examplePassword\",\r\n    \"email\":\"patientUser@example.cl\",\r\n    \"firstName\": \"firstName\",\r\n    \"lastName\":\"lastName\",\r\n    \"role\": \"patient\"\r\n}",
+					"raw": "{\r\n    \"username\": \"nurseUser\",\r\n    \"password\": \"examplePassword\",\r\n    \"email\":\"nurseUser@example.cl\",\r\n    \"firstName\": \"firstName\",\r\n    \"lastName\":\"lastName\",\r\n    \"role\": \"nurse\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -129,7 +129,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"exampleUser\",\r\n    \"password\": \"examplePassword\"\r\n}",
+					"raw": "{\r\n    \"username\": \"nurseUser\",\r\n    \"password\": \"examplePassword\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -179,6 +179,226 @@
 					"path": [
 						"users",
 						"65f646adcf5c8a12eee15dfc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addDailyHealthInfo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"mutation { addDailyHealthInfo(user: \\\"65f646adcf5c8a12eee15dfc\\\", pulseRate: 80, bloodPressure: \\\"120/80\\\", weight: 70, bodyTemperature: 36.6, respiratoryRate: 16) { id user pulseRate bloodPressure weight bodyTemperature respiratoryRate } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addPatientData",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"mutation { addPatientData(user: \\\"65fca5cc55004c66bd09b66a\\\", vitalSigns: { bodyTemperature: 38.6, heartRate: 80, bloodPressure: \\\"120/80\\\", respiratoryRate: 16 }, symptoms: [\\\"cough\\\", \\\"fever\\\"]) { user date vitalSigns { bodyTemperature heartRate bloodPressure respiratoryRate } symptoms } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDailyHealthInfo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"query { getDailyHealthInfo(id: \\\"65fcbde5ba2ee94731779d2f\\\") { id user pulseRate bloodPressure weight bodyTemperature respiratoryRate } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPatientData",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"query { getPatientData(userId: \\\"65fca5cc55004c66bd09b66a\\\") { user date vitalSigns { bodyTemperature heartRate bloodPressure respiratoryRate } symptoms } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDailyHealthInfoByUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"query { getDailyHealthInfosByUser(userId: \\\"65f646adcf5c8a12eee15dfc\\\") { id user pulseRate bloodPressure weight bodyTemperature respiratoryRate } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPatientDataArr",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n  getPatientDataByUser(userId: \"65fca5cc55004c66bd09b66a\") {\r\n    user\r\n    date\r\n    vitalSigns {\r\n      bodyTemperature\r\n      heartRate\r\n      bloodPressure\r\n      respiratoryRate\r\n    }\r\n    symptoms\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDailyHealthInfos",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"query { getDailyHealthInfos { id user pulseRate bloodPressure weight bodyTemperature respiratoryRate } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
 					]
 				}
 			},
