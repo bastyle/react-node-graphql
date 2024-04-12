@@ -4,7 +4,8 @@ const app = express()
 const mongoose = require('mongoose')
 const cors = require("cors")
 const userRoutes = require("./routes/userRoutes");
-const auth = require('./middleware/authRoleValidator')
+const nurseRoutes = require('./routes/nurseRoutes');
+const auth = require('./middleware/authRoleValidator.js');
 const {NURSE} = require("./enums/roleEnum");
 
 // graphql
@@ -65,6 +66,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/nurse", auth(NURSE), nurseRoutes);
 
 
 async function startServer() {
