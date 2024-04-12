@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     lastName: {
         type: String,
-        default: uuidv4,
+        default: 'No Last Name',
         unique: true
     },
     email: {
