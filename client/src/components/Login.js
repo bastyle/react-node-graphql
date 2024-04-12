@@ -1,68 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import bcrypt from 'bcryptjs'; // Import bcrypt library for password hashing
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
-import NurseDashboard from './NurseDashboard'; // Import NurseDashboard component
-import PatientDashboard from './PatientDashboard'; // Import PatientDashboard component
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [userRole, setUserRole] = useState('');
-  const [userExists, setUserExists] = useState(null); // State to track if user exists in the database
-  const [users, setUsers] = useState(null);
-  const navigate = useNavigate(); // Initialize useNavigate hook
 
-  useEffect(() => {
-    // Fetch users when component mounts
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch('http://localhost:3300/api/users');
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform validation
-    if (!username || !password) {
-      setError('Please enter both username and password');
-      return;
-    }
+  
+    try {
+      const response = await fetch('http://localhost:3300/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        const { token } = responseData;
+        
+        // Save the token in local storage
+        localStorage.setItem('token', token);
 
-    // Check if the user exists in the database
-    const user = users.find(user => user.username === username);
-    if (user) {
-      setUserExists(true); // Set user exists state to true
-      // Hash the entered password using bcrypt before comparison
-      const isPasswordMatch = await bcrypt.compare(password, user.password);
-      if (isPasswordMatch) {
-        setSuccess(true);
-        setUserRole(user.role); // Set user role
-        setError(''); // Clear any previous error messages
-
-        // Redirect based on user role
-        if (user.role === 'nurse') {
+        // Decode the JWT token to extract the user's role
+        const decodedToken = jwtDecode(token);
+        const userRole = decodedToken.profile;
+  
+        // Just for testing
+        console.log('User role:', userRole);
+        // Log the token to the console
+        console.log('Token:', token);
+  
+        // Re-direct based on the user's role
+        if (userRole === 'nurse') {
           navigate('/nurseDashboard');
-        } else if (user.role === 'patient') {
+        } else if (userRole === 'patient') {
           navigate('/patientDashboard');
         }
       } else {
-        setError('Invalid password');
+        const errorMessage = await response.text();
+        setError(errorMessage);
       }
-    } else {
-      setUserExists(false); // Set user exists state to false
-      setError('User does not exist');
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setError('Failed to login');
     }
   };
-
+  
   return (
     <div>
       <h2>Login</h2>
@@ -88,6 +78,8 @@ const Login = ({ onLogin }) => {
         </div>
         <button type="submit">Login</button>
       </form>
+       {/* Link to registration page */}
+       <p>Don't have an account? <Link to="/register">Register</Link></p>
     </div>
   );
 };

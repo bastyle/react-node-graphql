@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Dashboard from './Dashboard';
 
 const NurseDashboard = () => {
   const [temperature, setTemperature] = useState('');
@@ -7,6 +8,9 @@ const NurseDashboard = () => {
   const [respiratoryRate, setRespiratoryRate] = useState('');
   const [previousVisits, setPreviousVisits] = useState([]);
   const [medicalConditions, setMedicalConditions] = useState([]);
+
+  const token = localStorage.getItem('token');
+  console.log(token);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +26,8 @@ const NurseDashboard = () => {
 
   return (
     <div>
-      <h2>Nurse Dashboard</h2>
+      <Dashboard />
+      
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="temperature">Body Temperature:</label>

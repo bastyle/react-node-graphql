@@ -71,10 +71,11 @@ module.exports.login = async (req, res) => {
 
         const token = jwt.sign({ userId: user.userId, profile: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.cookie('token', token, { maxAge: 3600000, httpOnly: true });
-        //res.json({ token });
-        res.status(201).json({user: user.userId})
+        // Return the token in the response
+        res.status(201).json({ token });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error logging in' });
     }
 }
+

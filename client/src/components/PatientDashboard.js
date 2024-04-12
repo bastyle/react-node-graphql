@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Dashboard from './Dashboard';
 
 const PatientDashboard = () => {
   // State for daily information
@@ -68,7 +69,7 @@ const PatientDashboard = () => {
 
   return (
     <div>
-      <h2>Patient Dashboard</h2>
+      <Dashboard />
       <div>
         <h3>Enter Daily Information</h3>
         <form onSubmit={handleSubmitDailyInfo}>
