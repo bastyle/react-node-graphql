@@ -30,6 +30,9 @@ const dailyHealthInfoSchema = new mongoose.Schema({
     respiratoryRate: {
         type: Number,
         required: true
+    },
+    predictedCondition: {
+        type: String
     }
 });
 
