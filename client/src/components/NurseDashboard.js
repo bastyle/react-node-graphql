@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Dashboard from './Dashboard';
+import '../styles/NurseDashboard.css';
 
 const NurseDashboard = () => {
   const [bodyTemperature, setBodyTemperature] = useState('');
@@ -69,10 +70,10 @@ const NurseDashboard = () => {
   };
 
   return (
-    <div>
+    <div className='container'>
       <Dashboard />
       
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-container">
         <div>
           <label htmlFor="bodyTemperature">Body Temperature:</label>
           <input
@@ -119,10 +120,13 @@ const NurseDashboard = () => {
           />
           
         </div>
-        <button type="submit">Submit</button>
+        <div className='button-container'>
+          <button type="submit">Submit</button>
+        </div>
+        
       </form>
 
-      <div>
+      <div className="visits-container"> 
         <h3>Previous Clinical Visits</h3>
         {/* Display previous visit information here */}
         <ul>
