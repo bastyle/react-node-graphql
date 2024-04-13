@@ -404,5 +404,55 @@
 			},
 			"response": []
 		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const loginEndpoint =pm.environment.get('url')+'/users/login';\r",
+					"//console.log(loginEndpoint)\r",
+					"const credentials = {\r",
+					"  username: pm.environment.get('username'),//'adminUser',\r",
+					"  password: pm.environment.get('password')//'test1234'\r",
+					"};\r",
+					"\r",
+					"pm.sendRequest({\r",
+					"  url: loginEndpoint,\r",
+					"  method: 'POST',\r",
+					"  header: 'Content-Type:application/json',\r",
+					"  body: {\r",
+					"    mode: 'raw',\r",
+					"    raw: JSON.stringify(credentials)\r",
+					"  }\r",
+					"}, (error, response) => {\r",
+					"  if (error) {\r",
+					"    console.error('Error logging in:', error);\r",
+					"  } else {\r",
+					"    //console.log(response)\r",
+					"    const responseBody = JSON.parse(response.text());\r",
+					"    if (responseBody.token) {\r",
+					"      pm.environment.set('token', responseBody.token);\r",
+					"      console.log(\"token::: \"+responseBody.token)\r",
+					"    } else {\r",
+					"      console.error('No token received');\r",
+					"    }\r",
+					"  }\r",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
 	]
 }

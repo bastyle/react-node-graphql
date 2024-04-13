@@ -38,6 +38,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(express.json());
+const port = process.env.PORT || 3300;
+
 app.use(express.json())
 const port = process.env.PORT || 5000;
 // Health check
@@ -45,6 +48,7 @@ app.get('/api/health', (req, res) => {
     console.log('Health check...');
     res.send('OK!');
 });
+
 // Secured Health check
 app.get('/api/health/secured', auth(NURSE), (req, res) => {
     console.log('Sec Health check...');
@@ -52,16 +56,13 @@ app.get('/api/health/secured', auth(NURSE), (req, res) => {
 });
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-    .then(() => {
-        console.log('Connected to MongoDB');
-    })
-    .catch((error) => {
-        console.error('Failed to connect to MongoDB:', error);
-    });
+mongoose.connect('mongodb+srv://admin123:test123@cluster0.wqs3jie.mongodb.net/comp308db', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+  });
 
 
 // Routes
