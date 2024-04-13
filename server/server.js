@@ -41,8 +41,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 const port = process.env.PORT || 3300;
 
-app.use(express.json())
-const port = process.env.PORT || 5000;
 // Health check
 app.get('/api/health', (req, res) => {
     console.log('Health check...');
