@@ -18,8 +18,8 @@ const userSchema = new mongoose.Schema({
     },
     lastName: {
         type: String,
-        default: 'No Last Name',
-        unique: true
+        required: true,
+        default: 'No Last Name'
     },
     email: {
         type: String,
