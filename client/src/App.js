@@ -3,7 +3,8 @@ import Login from './components/Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NurseDashboard from './components/NurseDashboard';
 import PatientDashboard from './components/PatientDashboard';
-import Register from './components/Register'; 
+import Register from './components/Register';
+import PatientExample from "./components/PatientExample";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
     <Route path="/nurseDashboard" element={<NurseDashboard />} />
     <Route path="/patientDashboard" element={<PatientDashboard />} />
     <Route path="/register" element={<Register />} />
+    <Route path="/patientExample" element={<PatientExample />} />
     {/* Add more routes for other components */}
   </Routes>
   );
