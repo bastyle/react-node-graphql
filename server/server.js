@@ -23,7 +23,7 @@ const server = new ApolloServer({
             user = jwtAuthUtils(req);
             console.log('user:', user)
         } catch (err) {
-            console.log('Invalid token');
+            console.log('Invalid token!!!');
         }
         // Add the user info to the context
         return {user};
@@ -54,7 +54,7 @@ app.get('/api/health/secured', auth(NURSE), (req, res) => {
 });
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://admin123:test123@cluster0.wqs3jie.mongodb.net/comp308db', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to MongoDB');
   })

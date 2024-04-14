@@ -1,5 +1,6 @@
 const DailyHealthInfo = require('../models/dailyHealthInfoModel');
 const PatientData = require('../models/patientDataModel');
+const User = require('../models/userModel');
 const {NURSE, PATIENT} = require("../enums/roleEnum");
 
 const resolvers = {
@@ -23,6 +24,15 @@ const resolvers = {
         code: 403
       }));
       return await PatientData.find({ user: userId });
+    },
+    getUsersByRole: async (_, { role }, context) => {
+      if (!context.user) throw new Error(JSON.stringify({message: 'You are not authenticated!', code: 401}));
+      else if (context.user.profile !==NURSE) throw new Error(JSON.stringify({
+        message: 'You are not authorized to get this data!',
+        code: 403
+      }));
+      return User.find({role: role});
+      //return await User.find({ role: role });
     },
   },
   Mutation: {

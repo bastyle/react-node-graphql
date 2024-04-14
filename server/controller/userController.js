@@ -40,6 +40,17 @@ module.exports.getAllUsers = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch users' });
     }
 }
+// Get all users by role
+module.exports.getUsersByRole = async (req, res) => {
+    try {
+        const role = req.params.role;
+        const users = await userModel.find({ role: role });
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch users' });
+    }
+}
+
 
 // Get user by ID
 module.exports.getUserById = async (req, res) => {

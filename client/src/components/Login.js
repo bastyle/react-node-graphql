@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import '../styles/Login.css'
+import {loginRoute} from "../utils/APIRoutes";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +15,7 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      const response = await fetch('http://localhost:3300/api/users/login', {
+      const response = await fetch(loginRoute, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -25,13 +25,23 @@ const typeDefs = gql`
     vitalSigns: VitalSigns!
     symptoms: [String]
   }
-
+  type User {
+    username: String!
+    firstName: String!
+    userId: String!
+    lastName: String!
+    email: String!
+    role: String!
+    _id: ID!
+  }
+  
   type Query {
     getDailyHealthInfo(id: ID!): DailyHealthInfo
     getDailyHealthInfos: [DailyHealthInfo]
     getDailyHealthInfosByUser(userId: ID!): [DailyHealthInfo]
     getPatientData(userId: ID!): PatientData
     getPatientDataByUser(userId: ID!): [PatientData]
+    getUsersByRole(role: String!): [User]
   }
 
   type Mutation {
