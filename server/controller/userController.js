@@ -80,7 +80,7 @@ module.exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ userId: user.userId, profile: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user.userId, profile: user.role, username }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.cookie('token', token, { maxAge: 3600000, httpOnly: true });
 
         // Return the token in the response

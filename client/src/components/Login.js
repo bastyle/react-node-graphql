@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import '../styles/Login.css'
 import {loginRoute} from "../utils/APIRoutes";
+import {login} from "../utils/TokenUtils";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -32,16 +33,18 @@ const Login = () => {
 
         // Decode the JWT token to extract the user's role
         const decodedToken = jwtDecode(token);
+        localStorage.setItem('user', decodedToken.username);
         const userRole = decodedToken.profile;
   
         // Just for testing
         console.log('User role:', userRole);
         // Log the token to the console
         console.log('Token:', token);
+        login(token);
   
         // Re-direct based on the user's role
         if (userRole === 'nurse') {
-          navigate('/nurseDashboard');
+          navigate('/nurse');
         } else if (userRole === 'patient') {
           navigate('/patientDashboard');
         }
