@@ -4,6 +4,7 @@ import {ApolloClient, createHttpLink, gql, InMemoryCache, useQuery} from '@apoll
 import {setContext} from '@apollo/client/link/context';
 import {grapqhQl} from "../../utils/APIRoutes";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 
 //import { useHistory } from 'react-router-dom';
 
@@ -49,6 +50,9 @@ const GET_USERS_BY_ROLE = gql`
 
 
 const NurseDashboard = () => {
+
+    const navigate = useNavigate();
+
     const {loading, error, data} = useQuery(GET_USERS_BY_ROLE, {
         client, variables: {role: 'patient'},
     });
@@ -70,6 +74,8 @@ const NurseDashboard = () => {
     const handleCheckInfo = (userId) => {
         // Navigate to the Check Info component with the user ID
         //history.push(`/info/${userId}`);
+        navigate(`/patient/${userId}`);
+
     };
     const currentDate = new Date().toLocaleDateString();
 
@@ -105,7 +111,7 @@ const NurseDashboard = () => {
                             <Button variant="danger" onClick={() => handleDelete(user.userId)}>
                                 Delete
                             </Button>{' '}
-                            <Button variant="info" onClick={() => handleCheckInfo(user.userId)}>
+                            <Button variant="info" onClick={() => handleCheckInfo(user._id)}>
                                 Check Info
                             </Button>
                         </td>
