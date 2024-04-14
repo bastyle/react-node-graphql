@@ -10,11 +10,11 @@ module.exports.addPatientHealthInfo = async (req, res) => {
         console.log('Adding patient information...', req.body);
         
         // Extract user ID from the request body
-        const userId = req.body.user;
-
+        // const userId = req.body.user;
+        const inputData = req.body;
         // Extract patient health information from the request body
         // and remove the 'user' field from the input data
-        const { user, ...inputData } = req.body;
+        // const { user, ...inputData } = req.body;
 
         // Use the 'classifyHealth' function to predict the medical condition
         // based on the extracted health metrics
@@ -24,7 +24,7 @@ module.exports.addPatientHealthInfo = async (req, res) => {
          provideAdvice(predictedCondition);
 
         // Store patient health information along with the predicted condition
-        const patientInfo = await DailyHealthInfo.create({ user: userId, ...inputData, predictedCondition });
+        const patientInfo = await DailyHealthInfo.create({ ...inputData, predictedCondition });
 
         // Respond with the created patient information
         res.status(201).json(patientInfo);
