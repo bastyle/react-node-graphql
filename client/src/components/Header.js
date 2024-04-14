@@ -27,7 +27,7 @@ const Header = () => {
                     <h1>Nurse Dashboard</h1>
                     <p>Welcome, {username}! Today's date is {currentDate}.</p>
                 </div>
-                <Button variant="danger"  style={{marginLeft: '80px', borderRadius: '5px'}}  onClick={handleLogOut}>Logout</Button>
+                <Button variant="danger"  style={{marginLeft: '180px', borderRadius: '5px'}}  onClick={handleLogOut}>Logout</Button>
             </Container>
         </div>
     );

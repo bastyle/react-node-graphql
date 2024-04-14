@@ -49,6 +49,7 @@ const typeDefs = gql`
     updateDailyHealthInfo(id: ID!, user: ID, pulseRate: Int, bloodPressure: String, weight: Float, bodyTemperature: Float, respiratoryRate: Int): DailyHealthInfo
     deleteDailyHealthInfo(id: ID!): DailyHealthInfo
     addPatientData(user: ID!, vitalSigns: VitalSignsInput!, symptoms: [String]): PatientData
+    createUser(username: String!, firstName: String!, lastName: String!, email: String!, role: String!): User
   }
   
  input VitalSignsInput {
