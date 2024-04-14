@@ -7,8 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {useNavigate} from 'react-router-dom';
 import Header from "../Header";
 
-//import { useHistory } from 'react-router-dom';
-
 
 // Create an http link:
 const httpLink = createHttpLink({
@@ -75,7 +73,7 @@ const NurseDashboard = () => {
     });
     const [createUser] = useMutation(CREATE_USER, {client});
 
-    const {loading, error, data} = useQuery(GET_USERS_BY_ROLE, {
+    const {loading, error, data, refetch} = useQuery(GET_USERS_BY_ROLE, {
         client, variables: {role: 'patient'},
     });
 
@@ -107,9 +105,6 @@ const NurseDashboard = () => {
         });
     };
 
-
-
-    //const [addPatientData] = useMutation(ADD_PATIENT_DATA, {client});
     const handleAddNewPatient = async (event) => {
         event.preventDefault();
 
@@ -118,15 +113,6 @@ const NurseDashboard = () => {
             alert('All fields are required!');
             return;
         }
-
-       /* try {
-            const {newPatientData} = await createUser({variables: newPatient});
-            console.log('New patient created:', newPatientData.createUser);
-            alert(`New patient created. Username: ${newPatientData.createUser.username}, Password: defaultPassword`);
-        } catch (error) {
-            console.error('Error creating user:', error);
-        }*/
-
         createUser({
             variables: {
                 username: newPatient.username,
@@ -139,13 +125,12 @@ const NurseDashboard = () => {
             console.log('New patient created:', newPatient.username);
             alert(`New patient created. Username: ${newPatient.username}, Password: defaultPassword`);
             setShowForm(false);
+            refetch();
         }).catch((error) => {
             console.error('Error creating user:', error);
             alert('Failed to create user');
         });
 
-
-        // Add your logic to create a new patient here
     };
 
     const currentDate = new Date().toLocaleDateString();
@@ -203,12 +188,12 @@ const NurseDashboard = () => {
                         <td>{user.lastName}</td>
                         <td>{user.email}</td>
                         <td>
-                            <Button variant="primary" onClick={() => handleEdit(user.userId)}>
+                            {/*<Button variant="primary" onClick={() => handleEdit(user.userId)}>
                                 Edit
                             </Button>{' '}
                             <Button variant="danger" onClick={() => handleDelete(user.userId)}>
                                 Delete
-                            </Button>{' '}
+                            </Button>{' '}*/}
                             <Button variant="info"
                                     onClick={() => handleCheckInfo(user._id, user.firstName, user.lastName)}>
                                 Check Info

@@ -111,6 +111,7 @@ const PatientComponent = () => {
         }).then(() => {
             alert('Patient data added successfully!');
             setShowForm(false);
+            refetch();
         }).catch((error) => {
             console.error('Failed to add patient data:', error);
         });
@@ -118,7 +119,7 @@ const PatientComponent = () => {
 
     //
 
-    const {loading, error, data} = useQuery(GET_PATIENT_DATA, {
+    const {loading, error, data, refetch} = useQuery(GET_PATIENT_DATA, {
         client, variables: {id},
     });
 
