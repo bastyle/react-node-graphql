@@ -71,10 +71,11 @@ const NurseDashboard = () => {
         // Call your delete function here
     };
 
-    const handleCheckInfo = (userId) => {
+    const handleCheckInfo = (userId, firstName, lastName) => {
         // Navigate to the Check Info component with the user ID
         //history.push(`/info/${userId}`);
-        navigate(`/patient/${userId}`);
+        const finalName = firstName + ' ' + lastName;
+        navigate(`/patient/${userId}/${finalName}`);
 
     };
     const currentDate = new Date().toLocaleDateString();
@@ -111,7 +112,7 @@ const NurseDashboard = () => {
                             <Button variant="danger" onClick={() => handleDelete(user.userId)}>
                                 Delete
                             </Button>{' '}
-                            <Button variant="info" onClick={() => handleCheckInfo(user._id)}>
+                            <Button variant="info" onClick={() => handleCheckInfo(user._id, user.firstName, user.lastName)}>
                                 Check Info
                             </Button>
                         </td>

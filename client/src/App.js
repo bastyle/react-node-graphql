@@ -15,7 +15,7 @@ function App() {
             <Route path="/patientDashboard" element={<PatientDashboard/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/nurse" element={<NurseDash/>}/>
-            <Route path="/patient/:id" element={<PatientComponent />} />
+            <Route path="/patient/:id/:name" element={<PatientComponent />} />
             {/* Add more routes for other components */}
         </Routes>
     );

@@ -64,7 +64,8 @@ const ADD_PATIENT_DATA = gql`
   }
 `;
 const PatientComponent = () => {
-    const {id} = useParams();
+    const {id,name} = useParams();
+    console.log('id:', id, 'name:', name)
     const navigate = useNavigate();
     const [showForm, setShowForm] = useState(false);
     const [newData, setNewData] = useState({
@@ -132,7 +133,7 @@ const PatientComponent = () => {
 
             <Container>
 
-                <h3>Patient Data</h3>
+                <h3>Patient Data ({name})</h3>
                 <Button variant="secondary" style={{ margin: '10px' }} onClick={() => navigate(-1)}>Go Back</Button>
                 <Button variant="primary" style={{ margin: '10px' }} onClick={() => setShowForm(!showForm)}>Add New Data</Button>
 
