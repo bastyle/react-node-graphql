@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -38,7 +37,7 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
+    <div>
       <h2>Register</h2>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
@@ -89,8 +88,7 @@ const Register = () => {
         </div>
         <div>
           <label htmlFor="role">Role:</label>
-          <select id="role" value={role} onChange={(e) => setRole(e.target.value)} required>
-            <option value="" disabled>Select Role</option>
+          <select id="role" value={role} onChange={(e) => setRole(e.target.value)}>
             <option value="nurse">Nurse</option>
             <option value="patient">Patient</option>
           </select>

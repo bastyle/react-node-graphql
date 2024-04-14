@@ -1,50 +1,95 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Dashboard from './Dashboard';
+import '../styles/NurseDashboard.css';
 
 const NurseDashboard = () => {
-  const [temperature, setTemperature] = useState('');
-  const [heartRate, setHeartRate] = useState('');
+  const [bodyTemperature, setBodyTemperature] = useState('');
+  const [pulseRate, setPulseRate] = useState('');
   const [bloodPressure, setBloodPressure] = useState('');
   const [respiratoryRate, setRespiratoryRate] = useState('');
+  const [weight, setWeight] = useState('');
+  const [predictedCondition] = useState('');
   const [previousVisits, setPreviousVisits] = useState([]);
-  const [medicalConditions, setMedicalConditions] = useState([]);
 
   const token = localStorage.getItem('token');
   console.log(token);
 
+  useEffect(() => {
+    const fetchPreviousVisits = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:3300/api/nurse/', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setPreviousVisits(response.data);
+      } catch (error) {
+        console.error('Error fetching previous visit records:', error);
+      }
+    };
+  
+    fetchPreviousVisits();
+  }, []);
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic to handle submission of vital signs data
-    // This could involve sending the data to the backend for storage and analysis
-  };
-
-  const handleGenerateConditions = () => {
-    // Logic to generate list of medical conditions
-    // This could involve sending the vital signs data to a backend endpoint
-    // that utilizes deep learning algorithms and publicly available datasets
+    // Prepare the data to be sent to the backend
+    const data = {
+      bodyTemperature,
+      pulseRate,
+      bloodPressure,
+      respiratoryRate,
+      weight
+    };
+     // Retrieve the JWT token from localStorage
+  const token = localStorage.getItem('token');
+  
+  // Send a POST request to add the patient's vitals with Authorization header
+  axios.post('http://localhost:3300/api/nurse/', data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(response => {
+    console.log('Patient vitals added successfully:', response.data);
+    // Update the state with the newly added visit
+    setPreviousVisits([...previousVisits, response.data]);
+    // Clear the form fields
+    setBodyTemperature('');
+    setPulseRate('');
+    setBloodPressure('');
+    setRespiratoryRate('');
+    setWeight('');
+  })
+  .catch(error => {
+    console.error('Error adding patient vitals:', error);
+  });
   };
 
   return (
-    <div>
+    <div className='container'>
       <Dashboard />
       
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-container">
         <div>
-          <label htmlFor="temperature">Body Temperature:</label>
+          <label htmlFor="bodyTemperature">Body Temperature:</label>
           <input
             type="text"
-            id="temperature"
-            value={temperature}
-            onChange={(e) => setTemperature(e.target.value)}
+            id="bodyTemperature"
+            value={bodyTemperature}
+            onChange={(e) => setBodyTemperature(e.target.value)}
           />
         </div>
         <div>
-          <label htmlFor="heartRate">Heart Rate:</label>
+          <label htmlFor="pulseRate">Heart Rate:</label>
           <input
             type="text"
-            id="heartRate"
-            value={heartRate}
-            onChange={(e) => setHeartRate(e.target.value)}
+            id="pulseRate"
+            value={pulseRate}
+            onChange={(e) => setPulseRate(e.target.value)}
           />
         </div>
         <div>
@@ -65,21 +110,32 @@ const NurseDashboard = () => {
             onChange={(e) => setRespiratoryRate(e.target.value)}
           />
         </div>
-        <button type="submit">Submit</button>
+        <div>
+          <label htmlFor="weight">Weight:</label>
+          <input
+            type="text"
+            id="weight"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+          />
+          
+        </div>
+        <div className='button-container'>
+          <button type="submit">Submit</button>
+        </div>
+        
       </form>
 
-      {/* Placeholder section for displaying previous clinical visit information */}
-      <div>
+      <div className="visits-container"> 
         <h3>Previous Clinical Visits</h3>
         {/* Display previous visit information here */}
+        <ul>
+          {previousVisits.map(visit => (
+            <li key={visit._id}>{visit.date}: Temperature - {visit.bodyTemperature}, Heart Rate - {visit.pulseRate}, Blood Pressure - {visit.bloodPressure}, Respiratory Rate - {visit.respiratoryRate},Weight - {visit.weight}, Predicted Contition - {visit.predictedCondition}</li>
+          ))}
+        </ul>
       </div>
 
-      {/* Placeholder section for generating medical conditions */}
-      <div>
-        <h3>Generate Medical Conditions</h3>
-        <button onClick={handleGenerateConditions}>Generate</button>
-        {/* Display generated medical conditions here */}
-      </div>
     </div>
   );
 };
