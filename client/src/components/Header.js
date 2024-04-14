@@ -29,7 +29,6 @@ const Header = () => {
                 </div>
                 <Button variant="danger"  style={{marginLeft: '80px', borderRadius: '5px'}}  onClick={handleLogOut}>Logout</Button>
             </Container>
-
         </div>
     );
 };
