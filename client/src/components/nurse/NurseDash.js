@@ -5,6 +5,7 @@ import {setContext} from '@apollo/client/link/context';
 import {grapqhQl} from "../../utils/APIRoutes";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import Header from "../Header";
 
 //import { useHistory } from 'react-router-dom';
 
@@ -82,12 +83,7 @@ const NurseDashboard = () => {
 
     return (
         <div>
-            <Container className="d-flex justify-content-center align-items-center custom-container p-3 my-3">
-                <div className="text-center">
-                    <h1>Nurse Dashboard</h1>
-                    <p>Welcome, {username}! Today's date is {currentDate}.</p>
-                </div>
-            </Container>
+            <Header/>
             <Table striped bordered hover>
                 <thead>
                 <tr>

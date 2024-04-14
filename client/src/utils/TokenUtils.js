@@ -26,3 +26,11 @@ export function getToken() {
 export function getUser() {
     return localStorage.getItem('user');
 }
+
+export function getUserId() {
+    return localStorage.getItem('userId');
+}
+
+export function getUserRole() {
+    return localStorage.getItem('userRole');
+}

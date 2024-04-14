@@ -4,6 +4,7 @@ import {grapqhQl} from "../../utils/APIRoutes";
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useState} from 'react';
 import {Button, Card, Container, Form, ListGroup} from 'react-bootstrap';
+import Header from "../Header";
 
 
 // Create an http link:
@@ -64,7 +65,7 @@ const ADD_PATIENT_DATA = gql`
   }
 `;
 const PatientComponent = () => {
-    const {id,name} = useParams();
+    const {id, name} = useParams();
     console.log('id:', id, 'name:', name)
     const navigate = useNavigate();
     const [showForm, setShowForm] = useState(false);
@@ -84,7 +85,7 @@ const PatientComponent = () => {
     };
 
     //
-    const [addPatientData] = useMutation(ADD_PATIENT_DATA, { client });
+    const [addPatientData] = useMutation(ADD_PATIENT_DATA, {client});
 
     const handleAddNewData = (event) => {
         event.preventDefault();
@@ -130,15 +131,22 @@ const PatientComponent = () => {
     // Now you can use data.getPatientDataByUser to access the patient data
     return (
         <div>
-
+            <Header/>
             <Container>
 
-                <h3>Patient Data ({name})</h3>
-                <Button variant="secondary" style={{ margin: '10px' }} onClick={() => navigate(-1)}>Go Back</Button>
-                <Button variant="primary" style={{ margin: '10px' }} onClick={() => setShowForm(!showForm)}>Add New Data</Button>
+                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <h3>Patient Data ({name})</h3>
+                    <div>
+                        <Button variant="secondary" style={{margin: '10px'}} onClick={() => navigate(-1)}>Go
+                            Back</Button>
+                        <Button variant="primary" style={{margin: '10px'}} onClick={() => setShowForm(!showForm)}>Add
+                            New Data</Button>
+                    </div>
+                </div>
 
                 {showForm && (
-                    <Form onSubmit={handleAddNewData} style={{ backgroundColor: '#f8f9fa', margin: '20px', padding:'20px', borderRadius: '5px' }}>
+                    <Form onSubmit={handleAddNewData}
+                          style={{backgroundColor: '#f8f9fa', margin: '20px', padding: '20px', borderRadius: '5px'}}>
                         <h4>Add New Patient Data</h4>
                         <Form.Group controlId="bodyTemperature">
                             <Form.Label>Body Temperature</Form.Label>
@@ -167,8 +175,9 @@ const PatientComponent = () => {
                                           onChange={handleInputChange}/>
                         </Form.Group>
 
-                        <Button variant="success" style={{ margin: '10px' }} type="submit">Submit</Button>
-                        <Button variant="danger" style={{ margin: '10px' }} onClick={() => setShowForm(false)}>Cancel</Button>
+                        <Button variant="success" style={{margin: '10px'}} type="submit">Submit</Button>
+                        <Button variant="danger" style={{margin: '10px'}}
+                                onClick={() => setShowForm(false)}>Cancel</Button>
                     </Form>
                 )}
 
