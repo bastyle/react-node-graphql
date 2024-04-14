@@ -1,32 +1,33 @@
-require('dotenv').config()
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
-const cors = require("cors")
+require('dotenv').config();
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const nurseRoutes = require('./routes/nurseRoutes');
+const patientRoutes = require('./routes/patientRoutes'); // Import patientRoutes
 const auth = require('./middleware/authRoleValidator.js');
-const {NURSE} = require("./enums/roleEnum");
+const { NURSE } = require("./enums/roleEnum");
 
-// graphql
-const {ApolloServer} = require('apollo-server-express');
+// GraphQL
+const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
-const {verify} = require("jsonwebtoken");
+const { verify } = require("jsonwebtoken");
 const jwtAuthUtils = require('./utils/jwtAuthUtils');
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({req}) => {
+    context: ({ req }) => {
         let user = null;
         try {
             user = jwtAuthUtils(req);
-            console.log('user:', user)
+            console.log('user:', user);
         } catch (err) {
             console.log('Invalid token');
         }
         // Add the user info to the context
-        return {user};
+        return { user };
     },
 });
 
@@ -54,26 +55,25 @@ app.get('/api/health/secured', auth(NURSE), (req, res) => {
 });
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://admin123:test123@cluster0.wqs3jie.mongodb.net/comp308db', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((err) => {
-    console.error('Error connecting to MongoDB:', err);
-  });
-
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('Connected to MongoDB');
+    })
+    .catch((err) => {
+        console.error('Error connecting to MongoDB:', err);
+    });
 
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/nurse", auth(NURSE), nurseRoutes);
-
+app.use("/api/patientData", patientRoutes); // Mount patientRoutes
 
 async function startServer() {
     // Start the Apollo Server
     await server.start();
 
     // Apply middleware to Express app after server is started
-    server.applyMiddleware({app, path: '/api/graphql'});
+    server.applyMiddleware({ app, path: '/api/graphql' });
 
     app.listen(port, () => console.log(`Server listening on port ${port}`));
     console.log(`Server is running on port ${port}${server.graphqlPath}`);

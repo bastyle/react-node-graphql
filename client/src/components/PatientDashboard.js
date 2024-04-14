@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { ADD_DAILY_INFO_MUTATION, SUBMIT_SYMPTOMS_MUTATION } from '../mutations';
+import Dashboard from './Dashboard';
 
 const PatientDashboard = () => {
+  // State for daily information
   const [dailyInfo, setDailyInfo] = useState({
     pulseRate: '',
     bloodPressure: '',
@@ -11,16 +11,16 @@ const PatientDashboard = () => {
     respiratoryRate: ''
   });
 
+  // State for checklist choices
   const [checklist, setChecklist] = useState({
     cough: false,
     fever: false,
     fatigue: false,
     shortnessOfBreath: false
+    // Add more symptoms as needed
   });
 
-  const [addDailyInfoMutation] = useMutation(ADD_DAILY_INFO_MUTATION);
-  const [submitSymptomsMutation] = useMutation(SUBMIT_SYMPTOMS_MUTATION);
-
+  // Function to handle changes in daily information input fields
   const handleDailyInfoChange = (e) => {
     const { name, value } = e.target;
     setDailyInfo(prevState => ({
@@ -29,6 +29,7 @@ const PatientDashboard = () => {
     }));
   };
 
+  // Function to handle changes in checklist checkboxes
   const handleChecklistChange = (e) => {
     const { name, checked } = e.target;
     setChecklist(prevState => ({
@@ -37,43 +38,38 @@ const PatientDashboard = () => {
     }));
   };
 
-  const handleSubmitDailyInfo = async (e) => {
+  // Function to submit daily information
+  const handleSubmitDailyInfo = (e) => {
     e.preventDefault();
-    try {
-      await addDailyInfoMutation({
-        variables: { input: { ...dailyInfo } }
-      });
-      setDailyInfo({
-        pulseRate: '',
-        bloodPressure: '',
-        weight: '',
-        temperature: '',
-        respiratoryRate: ''
-      });
-    } catch (error) {
-      console.error('Error submitting daily information:', error);
-    }
+    // Perform validation and submit data to backend
+    console.log('Submitting daily information:', dailyInfo);
+    // Reset daily information fields after submission
+    setDailyInfo({
+      pulseRate: '',
+      bloodPressure: '',
+      weight: '',
+      temperature: '',
+      respiratoryRate: ''
+    });
   };
 
-  const handleSubmitChecklist = async (e) => {
+  // Function to submit checklist choices
+  const handleSubmitChecklist = (e) => {
     e.preventDefault();
-    try {
-      await submitSymptomsMutation({
-        variables: { input: Object.keys(checklist).filter(symptom => checklist[symptom]) }
-      });
-      setChecklist({
-        cough: false,
-        fever: false,
-        fatigue: false,
-        shortnessOfBreath: false
-      });
-    } catch (error) {
-      console.error('Error submitting checklist:', error);
-    }
+    // Perform validation and submit data to backend
+    console.log('Submitting checklist:', checklist);
+    // Reset checklist after submission
+    setChecklist({
+      cough: false,
+      fever: false,
+      fatigue: false,
+      shortnessOfBreath: false
+    });
   };
 
   return (
     <div>
+      <Dashboard />
       <div>
         <h3>Enter Daily Information</h3>
         <form onSubmit={handleSubmitDailyInfo}>
@@ -111,6 +107,7 @@ const PatientDashboard = () => {
       </div>
       <div>
         <h3>Fitness Games</h3>
+        {/* Add links or buttons to access fitness games page */}
         <p>Placeholder for fitness games</p>
       </div>
     </div>
