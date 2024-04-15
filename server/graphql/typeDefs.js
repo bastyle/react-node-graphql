@@ -10,6 +10,7 @@ const typeDefs = gql`
     weight: Float!
     bodyTemperature: Float!
     respiratoryRate: Int!
+    symptoms: [String]
   }
   
   type VitalSigns {
@@ -45,7 +46,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addDailyHealthInfo(user: ID!, pulseRate: Int!, bloodPressure: String!, weight: Float!, bodyTemperature: Float!, respiratoryRate: Int!): DailyHealthInfo
+    addDailyHealthInfo(user: ID!, pulseRate: Int!, bloodPressure: String!, weight: Float!, bodyTemperature: Float!, respiratoryRate: Int!, symptoms: [String], date: String): DailyHealthInfo
     updateDailyHealthInfo(id: ID!, user: ID, pulseRate: Int, bloodPressure: String, weight: Float, bodyTemperature: Float, respiratoryRate: Int): DailyHealthInfo
     deleteDailyHealthInfo(id: ID!): DailyHealthInfo
     addPatientData(user: ID!, vitalSigns: VitalSignsInput!, symptoms: [String]): PatientData

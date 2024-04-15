@@ -33,6 +33,10 @@ const dailyHealthInfoSchema = new mongoose.Schema({
     },
     predictedCondition: {
         type: String
+    },
+    symptoms: {
+        type: [String],
+        required: false
     }
 });
 

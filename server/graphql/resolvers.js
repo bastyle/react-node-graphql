@@ -44,7 +44,8 @@ const resolvers = {
             bloodPressure,
             weight,
             bodyTemperature,
-            respiratoryRate
+            respiratoryRate,
+            symptoms
         }, context) => {
             if (!context.user) throw new Error(JSON.stringify({message: 'You are not authenticated!', code: 401}));
             /*else if (context.user.profile !== PATIENT) throw new Error(JSON.stringify({
@@ -58,7 +59,8 @@ const resolvers = {
                 bloodPressure,
                 weight,
                 bodyTemperature,
-                respiratoryRate
+                respiratoryRate,
+                symptoms
             });
             await dailyHealthInfo.save();
             return dailyHealthInfo;
