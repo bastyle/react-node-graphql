@@ -23,4 +23,7 @@ router.get('/:id', nurseController.getPatientHealthInfoById);
 // Delete patient health information by ID
 router.delete('/:id', nurseController.deletePatientHealthInfo);
 
+// Get advice for patient
+router.post('/advice', nurseController.getAdvice);
+
 module.exports = router;

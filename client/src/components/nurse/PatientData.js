@@ -1,10 +1,10 @@
 import {gql, useMutation, useQuery} from '@apollo/client';
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useState} from 'react';
-import {Button, Card, Container, Form, ListGroup} from 'react-bootstrap';
+import {Button, Card, Container, Form, ListGroup, Modal} from 'react-bootstrap';
 import Header from "../Header";
 import apolloClient from "../../utils/ApolloUtils";
-
+import {nurseRoute} from "../../utils/APIRoutes";
 
 
 const GET_PATIENT_DATA = gql`
@@ -43,6 +43,7 @@ const PatientComponent = () => {
     const {id, name} = useParams();
     console.log('id:::', id, 'name:', name)
     const navigate = useNavigate();
+    const [showDiagnoseModal, setShowDiagnoseModal] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [newData, setNewData] = useState({
         bodyTemperature: '',
@@ -51,6 +52,7 @@ const PatientComponent = () => {
         respiratoryRate: '',
         symptoms: ''
     });
+    const [diagnose, setDiagnose] = useState('');
 
     const handleInputChange = (event) => {
         setNewData({
@@ -92,6 +94,8 @@ const PatientComponent = () => {
         });
     };
 
+
+
     //
 
     const {loading, error, data, refetch} = useQuery(GET_PATIENT_DATA, {
@@ -99,13 +103,58 @@ const PatientComponent = () => {
     });
 
 
+
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
+
+    const generateDiagnose = async () => {
+        // Get the last record from patientData
+        //const lastRecord = data.getPatientDataByUser[data.getPatientDataByUser.length - 1];
+        //console.log('lastRecord:', lastRecord)
+
+        // Prepare the body data
+        const bodyData = {
+            userId: id
+        };
+
+        // Make a POST request to the /api/nurse/advice endpoint
+        const response = await fetch(nurseRoute+'/advice', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            body: JSON.stringify(bodyData)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Success:', data);
+        setDiagnose(data.advice);
+        setShowDiagnoseModal(true);
+    };
 
 
     return (
         <div>
             <Header/>
+            <Modal show={showDiagnoseModal} onHide={() => setShowDiagnoseModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Diagnose</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{diagnose}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDiagnoseModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <Container>
 
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -115,6 +164,10 @@ const PatientComponent = () => {
                             Back</Button>
                         <Button variant="primary" style={{margin: '10px'}} onClick={() => setShowForm(!showForm)}>Add
                             New Data</Button>
+
+                        <Button variant="primary" style={{margin: '10px'}} onClick={generateDiagnose}>
+                            Generate Diagnose
+                        </Button>
                     </div>
                 </div>
 

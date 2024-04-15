@@ -17,6 +17,7 @@ const trainingData = [
 const net = new brain.NeuralNetwork();
 // Function to classify health condition based on input data
 function classifyHealth(input) {
+    //console.log('input:', input)
     const output = net.run(input);
     const condition = Object.keys(output).find(key => output[key] === Math.max(...Object.values(output)));
     return condition;
@@ -24,11 +25,13 @@ function classifyHealth(input) {
 
 // Function to provide advice based on the predicted condition
 function provideAdvice(predictedCondition) {
+    let advice;
     if (predictedCondition !== 'normal') {
-        console.log(`Based on the provided health metrics, you may have ${predictedCondition}. It's advisable to consult a doctor.`);
+        advice = `Based on the provided health metrics, you may have ${predictedCondition}. It's advisable to consult a doctor.`;
     } else {
-        console.log(`Based on the provided health metrics, you appear to be in a normal condition. However, if you have any concerns, consulting a doctor is always a good idea.`);
+        advice = `Based on the provided health metrics, you appear to be in a normal condition. However, if you have any concerns, consulting a doctor is always a good idea.`;
     }
+    return advice;
 }
 
 // Train the neural network with the training data
