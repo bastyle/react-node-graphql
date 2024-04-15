@@ -2,6 +2,7 @@ import {useNavigate} from "react-router-dom";
 import {Button, Container, Table} from "react-bootstrap";
 import React from "react";
 import {getUserRole, logout} from "../utils/TokenUtils";
+import {capitalizeFirstLetter} from "../utils/Utils";
 
 
 const Header = () => {
@@ -24,7 +25,7 @@ const Header = () => {
         <div className="d-flex ">
             <Container className="d-flex justify-content-center align-items-center custom-container p-3 my-3">
                 <div className="text-center">
-                    <h1>Nurse Dashboard</h1>
+                    <h1>{capitalizeFirstLetter(role)} Dashboard</h1>
                     <p>Welcome, {username}! Today's date is {currentDate}.</p>
                 </div>
                 <Button variant="danger"  style={{marginLeft: '180px', borderRadius: '5px'}}  onClick={handleLogOut}>Logout</Button>

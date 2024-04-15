@@ -2,11 +2,12 @@ import './App.css';
 import Login from './components/Login';
 import {Route, Routes} from 'react-router-dom';
 
-import PatientDashboard from './components/PatientDashboard';
+
 import Register from './components/Register';
 import NurseDash from "./components/nurse/NurseDash";
 import PatientComponent from "./components/nurse/PatientData";
 import NurseDashboard from "./components/nurse/NurseDash";
+import PatientDashboard from "./components/patient/PatientDash";
 
 function App() {
     return (

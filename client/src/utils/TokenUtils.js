@@ -13,7 +13,7 @@ export function login(token) {
 }
 
 export function logout() {
-    localStorage.removeItem(JSON.stringify('token'));
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('userId');
     localStorage.removeItem('userRole');

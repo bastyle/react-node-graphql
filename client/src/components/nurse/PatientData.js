@@ -1,36 +1,11 @@
-import {ApolloClient, createHttpLink, gql, InMemoryCache, useMutation, useQuery} from '@apollo/client';
-import {setContext} from '@apollo/client/link/context';
-import {grapqhQl} from "../../utils/APIRoutes";
+import {gql, useMutation, useQuery} from '@apollo/client';
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useState} from 'react';
 import {Button, Card, Container, Form, ListGroup} from 'react-bootstrap';
 import Header from "../Header";
+import apolloClient from "../../utils/ApolloUtils";
 
 
-// Create an http link:
-const httpLink = createHttpLink({
-    uri: grapqhQl, // replace with your server URL
-});
-
-// Get the authentication token from local storage if it exists
-const token = localStorage.getItem('token');
-
-
-// Create an authentication link:
-const authLink = setContext((_, {headers}) => {
-    return {
-        headers: {
-            ...headers,
-            authorization: token ? `Bearer ${token}` : "",
-        }
-    }
-});
-
-// Create the Apollo client
-const client = new ApolloClient({
-    link: authLink.concat(httpLink), // Chain it with the httpLink
-    cache: new InMemoryCache()
-});
 
 const GET_PATIENT_DATA = gql`
   query GetPatientData($id: ID!) {
@@ -66,7 +41,7 @@ const ADD_PATIENT_DATA = gql`
 `;
 const PatientComponent = () => {
     const {id, name} = useParams();
-    console.log('id:', id, 'name:', name)
+    console.log('id:::', id, 'name:', name)
     const navigate = useNavigate();
     const [showForm, setShowForm] = useState(false);
     const [newData, setNewData] = useState({
@@ -85,7 +60,7 @@ const PatientComponent = () => {
     };
 
     //
-    const [addPatientData] = useMutation(ADD_PATIENT_DATA, {client});
+    const [addPatientData] = useMutation(ADD_PATIENT_DATA, {client: apolloClient});
 
     const handleAddNewData = (event) => {
         event.preventDefault();
@@ -120,16 +95,14 @@ const PatientComponent = () => {
     //
 
     const {loading, error, data, refetch} = useQuery(GET_PATIENT_DATA, {
-        client, variables: {id},
+        client: apolloClient, variables: {id},
     });
 
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
-    //
 
 
-    // Now you can use data.getPatientDataByUser to access the patient data
     return (
         <div>
             <Header/>

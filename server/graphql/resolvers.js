@@ -47,10 +47,10 @@ const resolvers = {
             respiratoryRate
         }, context) => {
             if (!context.user) throw new Error(JSON.stringify({message: 'You are not authenticated!', code: 401}));
-            else if (context.user.profile !== PATIENT) throw new Error(JSON.stringify({
+            /*else if (context.user.profile !== PATIENT) throw new Error(JSON.stringify({
                 message: 'You are not authorized to add this data!',
                 code: 403
-            }));
+            }));*/
 
             const dailyHealthInfo = new DailyHealthInfo({
                 user,
