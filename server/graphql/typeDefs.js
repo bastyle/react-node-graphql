@@ -3,7 +3,6 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   type DailyHealthInfo {
     id: ID!
-    user: ID!
     date: String!
     pulseRate: Int!
     bloodPressure: String!
@@ -15,7 +14,7 @@ const typeDefs = gql`
   type VitalSigns {
     bodyTemperature: Float
     heartRate: Int
-    bloodPressure: String
+    bloodPressure: Int
     respiratoryRate: Int
   }
 
@@ -35,8 +34,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addDailyHealthInfo(user: ID!, pulseRate: Int!, bloodPressure: String!, weight: Float!, bodyTemperature: Float!, respiratoryRate: Int!): DailyHealthInfo
-    updateDailyHealthInfo(id: ID!, user: ID, pulseRate: Int, bloodPressure: String, weight: Float, bodyTemperature: Float, respiratoryRate: Int): DailyHealthInfo
+    addDailyHealthInfo( pulseRate: Int!, bloodPressure: Int!, weight: Float!, bodyTemperature: Float!, respiratoryRate: Int!): DailyHealthInfo
+    updateDailyHealthInfo(id: ID!, pulseRate: Int, bloodPressure: String, weight: Float, bodyTemperature: Float, respiratoryRate: Int): DailyHealthInfo
     deleteDailyHealthInfo(id: ID!): DailyHealthInfo
     addPatientData(user: ID!, vitalSigns: VitalSignsInput!, symptoms: [String]): PatientData
   }
