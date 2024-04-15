@@ -41,14 +41,13 @@ const PatientDashboard = () => {
     const [addDailyHealthInfo] = useMutation(ADD_DAILY_HEALTH_INFO, {client: apolloClient});
     const handleFormSubmit = (event) => {
         event.preventDefault();
-
-        // Validate form data
         if (!newData.pulseRate || !newData.bloodPressure || !newData.weight || !newData.bodyTemperature || !newData.respiratoryRate || !newData.symptoms) {
             alert('All fields are required!');
             return;
         }
+        console.log('newData:', newData);
 
-        // Run the mutation
+
         addDailyHealthInfo({
             variables: {
                 user: getUserId(),
@@ -57,7 +56,7 @@ const PatientDashboard = () => {
                 weight: parseFloat(newData.weight),
                 bodyTemperature: parseFloat(newData.bodyTemperature),
                 respiratoryRate: parseInt(newData.respiratoryRate),
-                symptoms: newData.symptoms.split(',').map(symptom => symptom.trim()),
+                symptoms: newData.symptoms,
             },
         }).then(() => {
             alert('Daily health info added successfully!');
@@ -89,6 +88,13 @@ const PatientDashboard = () => {
         });
     };
 
+    const handleInputChange2 = (event) => {
+        const value = Array.from(event.target.selectedOptions, option => option.value);
+        setNewData({
+            ...newData,
+            [event.target.name]: value
+        });
+    };
 
 
     if (loading) return <p>Loading...</p>;
@@ -99,11 +105,13 @@ const PatientDashboard = () => {
             <Header/>
             <Container>
                 <h2>Patient Health Daily Information</h2>
-                <Button variant="primary" style={{margin: '10px'}} onClick={() => setShowDailyInfoForm(!showDailyInfoForm)}>
+                <Button variant="primary" style={{margin: '10px'}}
+                        onClick={() => setShowDailyInfoForm(!showDailyInfoForm)}>
                     Add Daily Information
                 </Button>
                 {showDailyInfoForm && (
-                    <Form onSubmit={handleFormSubmit} style={{backgroundColor: '#f8f9fa', margin: '20px', padding: '20px', borderRadius: '5px'}}>
+                    <Form onSubmit={handleFormSubmit}
+                          style={{backgroundColor: '#f8f9fa', margin: '20px', padding: '20px', borderRadius: '5px'}}>
                         <Form.Group controlId="pulseRate">
                             <Form.Label>Pulse Rate</Form.Label>
                             <Form.Control type="text" name="pulseRate" value={newData.pulseRate}
@@ -131,11 +139,16 @@ const PatientDashboard = () => {
                         </Form.Group>
                         <Form.Group controlId="symptoms">
                             <Form.Label>Symptoms</Form.Label>
-                            <Form.Control type="text" name="symptoms" value={newData.symptoms}
-                                          onChange={handleInputChange}/>
+                            <Form.Control as="select" multiple name="symptoms" value={newData.symptoms}
+                                          onChange={handleInputChange2}>
+                                <option value="cough">Cough</option>
+                                <option value="fever">Fever</option>
+                                <option value="headache">Headache</option>
+                            </Form.Control>
                         </Form.Group>
                         <Button variant="success" style={{margin: '10px'}} type="submit">Submit</Button>
-                        <Button variant="danger" style={{margin: '10px'}} onClick={() => setShowDailyInfoForm(false)}>Cancel</Button>
+                        <Button variant="danger" style={{margin: '10px'}}
+                                onClick={() => setShowDailyInfoForm(false)}>Cancel</Button>
                     </Form>
                 )}
                 {data.getDailyHealthInfosByUser.map((info) => (
