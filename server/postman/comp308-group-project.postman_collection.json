@@ -30,20 +30,18 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"pm.sendRequest({\r",
-							" url: pm.environment.get(\"tokenurl\") ,\r",
-							" method: 'POST',\r",
-							" header: {\r",
-							"    'Content-Type': 'application/json'\r",
-							" },\r",
-							"body: {\r",
-							"   mode: 'raw',\r",
-							"   raw: JSON.stringify({ \"username\": pm.environment.get(\"username\"), \"password\" : pm.environment.get(\"password\")})\r",
-							"}\r",
-							"}, function (err, res) {\r",
-							"    console.log(res.json().token)\r",
-							"    pm.environment.set(\"token\", res.json().token);\r",
-							"});"
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -56,7 +54,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{token}}",
+							"value": "",
 							"type": "string"
 						}
 					]
@@ -83,7 +81,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"exampleUser\",\r\n    \"password\": \"examplePassword\",\r\n    \"email\":\"exampleEmail@example.cl\",\r\n    \"firstName\": \"firstName\",\r\n    \"lastName\":\"lastName\",\r\n    \"role\": \"nurse\"\r\n}",
+					"raw": "{\r\n    \"username\": \"nurseUser\",\r\n    \"password\": \"examplePassword\",\r\n    \"email\":\"nurseUser@example.cl\",\r\n    \"firstName\": \"firstName\",\r\n    \"lastName\":\"lastName\",\r\n    \"role\": \"nurse\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -104,12 +102,34 @@
 		},
 		{
 			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Store Cookie Value\", () => {\r",
+							"    const cookieName = \"token\"; // Replace with the actual cookie name\r",
+							"    const cookieValue = pm.cookies.get(cookieName);\r",
+							"\r",
+							"    if (cookieValue) {        \r",
+							"        pm.environment.set(\"token\", cookieValue); // Set environment variable\r",
+							"        console.log(\"Cookie value stored:\", cookieValue);\r",
+							"    } else {\r",
+							"        console.error(\"Cookie not found:\", cookieName);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"exampleUser\",\r\n    \"password\": \"examplePassword\"\r\n}",
+					"raw": "{\r\n    \"username\": \"nurseUser\",\r\n    \"password\": \"examplePassword\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -163,6 +183,276 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "addDailyHealthInfo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"mutation { addDailyHealthInfo(user: \\\"65f646adcf5c8a12eee15dfc\\\", pulseRate: 80, bloodPressure: \\\"120/80\\\", weight: 70, bodyTemperature: 36.6, respiratoryRate: 16) { id user pulseRate bloodPressure weight bodyTemperature respiratoryRate } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addPatientData",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"mutation { addPatientData(user: \\\"65fca5cc55004c66bd09b66a\\\", vitalSigns: { bodyTemperature: 38.6, heartRate: 80, bloodPressure: \\\"120/80\\\", respiratoryRate: 16 }, symptoms: [\\\"cough\\\", \\\"fever\\\"]) { user date vitalSigns { bodyTemperature heartRate bloodPressure respiratoryRate } symptoms } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDailyHealthInfo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"query { getDailyHealthInfo(id: \\\"65fcbde5ba2ee94731779d2f\\\") { id user pulseRate bloodPressure weight bodyTemperature respiratoryRate } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPatientData",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"query { getPatientData(userId: \\\"65fca5cc55004c66bd09b66a\\\") { user date vitalSigns { bodyTemperature heartRate bloodPressure respiratoryRate } symptoms } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDailyHealthInfoByUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"query { getDailyHealthInfosByUser(userId: \\\"65f646adcf5c8a12eee15dfc\\\") { id user pulseRate bloodPressure weight bodyTemperature respiratoryRate } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPatientDataArr",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n  getPatientDataByUser(userId: \"65fca5cc55004c66bd09b66a\") {\r\n    user\r\n    date\r\n    vitalSigns {\r\n      bodyTemperature\r\n      heartRate\r\n      bloodPressure\r\n      respiratoryRate\r\n    }\r\n    symptoms\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDailyHealthInfos",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"query\": \"query { getDailyHealthInfos { id user pulseRate bloodPressure weight bodyTemperature respiratoryRate } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/graphql",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const loginEndpoint =pm.environment.get('url')+'/users/login';\r",
+					"//console.log(loginEndpoint)\r",
+					"const credentials = {\r",
+					"  username: pm.environment.get('username'),//'adminUser',\r",
+					"  password: pm.environment.get('password')//'test1234'\r",
+					"};\r",
+					"\r",
+					"pm.sendRequest({\r",
+					"  url: loginEndpoint,\r",
+					"  method: 'POST',\r",
+					"  header: 'Content-Type:application/json',\r",
+					"  body: {\r",
+					"    mode: 'raw',\r",
+					"    raw: JSON.stringify(credentials)\r",
+					"  }\r",
+					"}, (error, response) => {\r",
+					"  if (error) {\r",
+					"    console.error('Error logging in:', error);\r",
+					"  } else {\r",
+					"    //console.log(response)\r",
+					"    const responseBody = JSON.parse(response.text());\r",
+					"    if (responseBody.token) {\r",
+					"      pm.environment.set('token', responseBody.token);\r",
+					"      console.log(\"token::: \"+responseBody.token)\r",
+					"    } else {\r",
+					"      console.error('No token received');\r",
+					"    }\r",
+					"  }\r",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
