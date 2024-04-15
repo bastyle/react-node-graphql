@@ -113,32 +113,32 @@ const PatientDashboard = () => {
                     <Form onSubmit={handleFormSubmit}
                           style={{backgroundColor: '#f8f9fa', margin: '20px', padding: '20px', borderRadius: '5px'}}>
                         <Form.Group controlId="pulseRate">
-                            <Form.Label>Pulse Rate</Form.Label>
+                            <Form.Label style={{fontWeight: 'bold'}}>Pulse Rate</Form.Label>
                             <Form.Control type="text" name="pulseRate" value={newData.pulseRate}
                                           onChange={handleInputChange}/>
                         </Form.Group>
                         <Form.Group controlId="bloodPressure">
-                            <Form.Label>Blood Pressure</Form.Label>
+                            <Form.Label style={{fontWeight: 'bold'}}>Blood Pressure</Form.Label>
                             <Form.Control type="text" name="bloodPressure" value={newData.bloodPressure}
                                           onChange={handleInputChange}/>
                         </Form.Group>
                         <Form.Group controlId="weight">
-                            <Form.Label>Weight</Form.Label>
+                            <Form.Label style={{fontWeight: 'bold'}}>Weight</Form.Label>
                             <Form.Control type="text" name="weight" value={newData.weight}
                                           onChange={handleInputChange}/>
                         </Form.Group>
                         <Form.Group controlId="bodyTemperature">
-                            <Form.Label>Body Temperature</Form.Label>
+                            <Form.Label style={{fontWeight: 'bold'}}>Body Temperature</Form.Label>
                             <Form.Control type="text" name="bodyTemperature" value={newData.bodyTemperature}
                                           onChange={handleInputChange}/>
                         </Form.Group>
                         <Form.Group controlId="respiratoryRate">
-                            <Form.Label>Respiratory Rate</Form.Label>
+                            <Form.Label style={{fontWeight: 'bold'}}>Respiratory Rate</Form.Label>
                             <Form.Control type="text" name="respiratoryRate" value={newData.respiratoryRate}
                                           onChange={handleInputChange}/>
                         </Form.Group>
                         <Form.Group controlId="symptoms">
-                            <Form.Label>Symptoms</Form.Label>
+                            <Form.Label style={{fontWeight: 'bold'}}>Symptoms</Form.Label>
                             <Form.Control as="select" multiple name="symptoms" value={newData.symptoms}
                                           onChange={handleInputChange2}>
                                 <option value="cough">Cough</option>
@@ -152,9 +152,9 @@ const PatientDashboard = () => {
                     </Form>
                 )}
                 {data.getDailyHealthInfosByUser.map((info) => (
-                    <Card key={info.id} style={{marginBottom: '1rem'}}>
+                    <Card key={info.id} style={{marginBottom: '.5rem', backgroundColor: '#f8f9fa', padding: '0.5px', borderRadius: '15px'}}>
                         <Card.Body>
-                            <Card.Title>
+                            <Card.Title style={{fontWeight: 'bold', color: '#007bff'}}>
                                 {
                                     new Date(Number(info.date)).toLocaleString('en-US', {
                                         year: 'numeric',
@@ -166,12 +166,12 @@ const PatientDashboard = () => {
                                     })
                                 }
                             </Card.Title>
-                            <Card.Text>Pulse Rate: {info.pulseRate}</Card.Text>
-                            <Card.Text>Blood Pressure: {info.bloodPressure}</Card.Text>
-                            <Card.Text>Weight: {info.weight}</Card.Text>
-                            <Card.Text>Body Temperature: {info.bodyTemperature}</Card.Text>
-                            <Card.Text>Respiratory Rate: {info.respiratoryRate}</Card.Text>
-                            <Card.Text>Symptoms: {info.symptoms.join(', ')}</Card.Text>
+                            <Card.Text style={{fontSize: '1.2rem'}}>Pulse Rate: {info.pulseRate}</Card.Text>
+                            <Card.Text style={{fontSize: '1.2rem'}}>Blood Pressure: {info.bloodPressure}</Card.Text>
+                            <Card.Text style={{fontSize: '1.2rem'}}>Weight: {info.weight}</Card.Text>
+                            <Card.Text style={{fontSize: '1.2rem'}}>Body Temperature: {info.bodyTemperature}</Card.Text>
+                            <Card.Text style={{fontSize: '1.2rem'}}>Respiratory Rate: {info.respiratoryRate}</Card.Text>
+                            <Card.Text style={{fontSize: '1.2rem'}}>Symptoms: {info.symptoms.join(', ')}</Card.Text>
                         </Card.Body>
                     </Card>
                 ))}
