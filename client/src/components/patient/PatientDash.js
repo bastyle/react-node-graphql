@@ -46,8 +46,6 @@ const PatientDashboard = () => {
             return;
         }
         console.log('newData:', newData);
-
-
         addDailyHealthInfo({
             variables: {
                 user: getUserId(),

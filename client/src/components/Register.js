@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Register.css';
+import {registerRoute} from "../utils/APIRoutes";
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -16,7 +17,7 @@ const Register = () => {
     e.preventDefault();
   
     try {
-      const response = await fetch('http://localhost:3300/api/users', {
+      const response = await fetch(registerRoute, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

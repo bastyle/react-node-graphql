@@ -158,9 +158,8 @@ const PatientComponent = () => {
 
                 {data.getPatientDataByUser.map((patientData, index) => (
                     <Card key={index} className="mb-3">
-                        <Card.Header>User: {patientData.user}</Card.Header>
+                        <Card.Header>Date: {new Date(parseInt(patientData.date)).toLocaleString()}</Card.Header>
                         <ListGroup variant="flush">
-                            <ListGroup.Item>Date: {new Date(parseInt(patientData.date)).toLocaleString()}</ListGroup.Item>
                             <ListGroup.Item>Body Temperature: {patientData.vitalSigns.bodyTemperature}</ListGroup.Item>
                             <ListGroup.Item>Heart Rate: {patientData.vitalSigns.heartRate}</ListGroup.Item>
                             <ListGroup.Item>Blood Pressure: {patientData.vitalSigns.bloodPressure}</ListGroup.Item>
